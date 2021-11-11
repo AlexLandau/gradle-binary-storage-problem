@@ -1,0 +1,52 @@
+apply plugin: "nebula.dependency-recommender"
+dependencyRecommendations {
+    strategy OverrideTransitives
+}
+
+apply plugin: 'java'
+repositories {
+    mavenCentral()
+}
+
+project.dependencies.components.all { ComponentMetadataDetails details ->
+    def groupName = details.getId().getGroup() + ':' + details.getId().getName();
+
+    String capabilityGroup = null
+    String capabilityName = null
+    if (groupName == 'jakarta.xml.bind:jakarta.xml.bind-api' || groupName == 'javax.xml.bind:jaxb-api') {
+        capabilityGroup = 'capabilities'
+        capabilityName = 'javax.xml.bind'
+    }
+
+    if (groupName == 'javax.activation:activation' || groupName == 'jakarta.activation:jakarta.activation-api') {
+        capabilityGroup = 'capabilities'
+        capabilityName = 'javax.activation'
+    }
+
+    if (capabilityGroup != null) {
+        details.allVariants { v ->
+            v.withCapabilities { m ->
+                m.addCapability(capabilityGroup, capabilityName, '0')
+            }
+        }
+    }
+}
+
+configurations.configureEach {
+    resolutionStrategy {
+        capabilitiesResolution {
+            withCapability('capabilities', 'javax.xml.bind') {
+                select('jakarta.xml.bind:jakarta.xml.bind-api:2.3.2')
+            }
+            withCapability('capabilities', 'javax.activation') {
+                select('jakarta.activation:jakarta.activation-api:1.2.1')
+            }
+        }
+    }
+}
+
+dependencies {
+    implementation "jakarta.xml.bind:jakarta.xml.bind-api"
+    implementation 'org.apache.hadoop:hadoop-yarn-common:2.9.2'
+    implementation 'javax.activation:activation:1.1.1'
+}

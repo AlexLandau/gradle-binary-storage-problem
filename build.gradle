@@ -1,0 +1,14 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "com.netflix.nebula:nebula-dependency-recommender:11.0.0"
+    }
+}
+
+apply plugin: "nebula.dependency-recommender"
+
+dependencyRecommendations {
+    propertiesFile file: project.rootProject.file("versions.props")
+}

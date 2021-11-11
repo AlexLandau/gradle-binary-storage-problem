@@ -1,0 +1,2 @@
+// Somehow, removing this line causes the problem to go away. No, really, try it.
+apply plugin: "nebula.dependency-recommender"
