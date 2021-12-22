@@ -1,4 +1,4 @@
-Repro of the "Problems reading data from Binary store"/"Corrupt serialized resolution result" bug in Gradle dependency management. Gradle version used is 7.3.
+Repro of the "Problems reading data from Binary store"/"Corrupt serialized resolution result" bug in Gradle dependency management. Gradle version used is 7.3.2.
 
 Run:
 
